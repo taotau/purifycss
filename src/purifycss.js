@@ -54,8 +54,14 @@ const purify = (searchThrough, css, options, callback) => {
     }
 
     // Option rejected = true
-    if (options.rejected && selectorFilter.rejectedSelectors.length) {
+    if (options.rejected) {
+      if (typeof options.rejected === 'boolean' && selectorFilter.rejectedSelectors.length) {
         PrintUtil.printRejected(selectorFilter.rejectedSelectors)
+      } else {
+        fs.writeFile(options.rejected, selectorFilter.rejectedSelectors.join('\n'), err => {
+            if (err) return err
+        })
+      }
     }
 
     if (options.output) {
